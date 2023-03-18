@@ -33,6 +33,7 @@ int main(int argc, char **argv)
 	int     rv = -1;
 	int     ch= 0 ;
 	int     port = 0;
+	int		time = 0;
 	int     conn_fd =-1;
 	float  temp = 0;
 	char   str[1024] ;
@@ -47,11 +48,12 @@ int main(int argc, char **argv)
 	struct option  opts[] = {
 		{"hostname",required_argument,NULL,'h'},
 		{"port",required_argument,NULL,'p'},
+		{"time",required_argument,NULL,'t'},
 		{"Help",no_argument,NULL,'H'},
 		{NULL,0,NULL,0}
 	};
 
-	while((ch = getopt_long(argc,argv,"h:p:H",opts,NULL)) != -1)
+	while((ch = getopt_long(argc,argv,"h:p:t:H",opts,NULL)) != -1)
 	{
 		switch(ch)
 		{
@@ -60,6 +62,9 @@ int main(int argc, char **argv)
 				break;
 			case'p':
 				port=atoi(optarg);
+				break;
+			case 't':
+				time=atoi(optarg);
 				break;
 			case'H':
 				print_usage(argv[0]);
@@ -141,7 +146,7 @@ int main(int argc, char **argv)
 			goto cleanup;
 		}
 		printf("the  temperature('c) is:%s\n", buf);
-		sleep(10);
+		sleep(time);
 	}
 cleanup:
 	close(conn_fd);
@@ -153,6 +158,7 @@ void print_usage(char *progname)
 	printf("%s usage: \n",progname);
 	printf("--h(--hostname): sepcify server hostname \n");
 	printf("-p(--port): sepcify server port \n");
+	printf("-t(--time):get the temperature time \n");
 	printf("-H(--Help): print this help information \n");
 }
 
